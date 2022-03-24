@@ -1,0 +1,46 @@
+const int buttonStartPin = 2;     // pin n?i button d? di?u khi?n
+const int buttonStopPin = 3;     // pin n?i button d? di?u khi?n
+const int ledPin =  13;      // pin n?i LED
+
+// T?o m?t bi?n nh?n di?n tr?ng thái button:
+int buttonStartState = 0;    
+int buttonStopState = 0;  
+
+char serialData;
+int pin=10;
+
+void setup() {
+  // Nhan tin hieu tu COM:
+  pinMode(pin, OUTPUT);  
+  Serial.begin(9600);
+
+  // set ledPin là output
+  pinMode(ledPin, OUTPUT);
+  // set buttonPin là input d? d?c giá tr? t? button
+  pinMode(buttonStartPin, INPUT);
+  pinMode(buttonStopPin, INPUT);
+}
+
+void loop() {
+  // Doc trang thai nut bam
+  buttonStartState = digitalRead(buttonStartPin);
+  buttonStopState = digitalRead(buttonStopPin);
+    // n?u button du?c nh?n, buttonState nh?n giá tr? HIGH, và ngu?c l?i
+  if (buttonStartState == HIGH) {
+    // B?t LED:
+    digitalWrite(ledPin, HIGH);
+  } 
+  if (buttonStopState == HIGH) {
+    // B?t LED:
+    digitalWrite(ledPin, LOW);
+  } 
+
+  // Doc trang thai COM
+  if(Serial.available()>0){
+    serialData = Serial.read();
+    Serial.print(serialData);
+    if (serialData == '1'){
+      digitalWrite(pin, HIGH); // Hien thi muc cao pin 10
+    }
+  }  
+}
